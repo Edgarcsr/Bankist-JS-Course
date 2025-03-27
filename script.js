@@ -79,8 +79,6 @@ const displayMovements = function (movements) {
   });
 };
 
-displayMovements(account1.movements);
-
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, cur) => acc + cur, 0);
   labelBalance.textContent = `${balance} EUR`;
@@ -97,28 +95,53 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
-console.log(accounts);
 
-const calcDisplaySummary = (movements) => {
-  const incomes = movements
+const calcDisplaySummary = (acc) => {
+  const incomes = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`;
 
-  const out = movements
+  const out = acc.movements
     .filter((mov) => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(out)}€`;
 
-  const interest = movements
+  const interest = acc.movements
     .filter((mov) => mov > 0)
-    .map((deposit) => (deposit * 1.2) / 100)
+    .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((int) => int >= 1)
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
 
-calcDisplaySummary(account1.movements);
+// Event Handlers
+let currentAccount;
+
+btnLogin.addEventListener("click", function (e) {
+  //prevent Form from submitting
+  e.preventDefault();
+
+  currentAccount = accounts.find(
+    (acc) => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // console.log(`Logged In`);
+    labelWelcome.textContent = `Welcome Back, ${
+      currentAccount.owner.split(` `)[0]
+    }`;
+  }
+  containerApp.style.opacity = 100;
+
+  inputLoginUsername.value = inputLoginPin.value = "";
+  inputLoginUsername.blur();
+  inputLoginPin.blur();
+
+  displayMovements(currentAccount.movements);
+  calcDisplayBalance(currentAccount.movements);
+  calcDisplaySummary(currentAccount);
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -196,3 +219,5 @@ const totalDepositsUSD = movements
   .reduce((acc, mov) => acc + mov, 0);
 
 console.log(totalDepositsUSD);
+
+const account = accounts.find((acc) => acc.owner === "Jessica Davis");
