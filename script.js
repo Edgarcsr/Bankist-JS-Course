@@ -71,7 +71,7 @@ const displayMovements = function (movements) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>
     `;
 
@@ -79,12 +79,12 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, cur) => acc + cur, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, cur) => acc + cur, 0);
+  labelBalance.textContent = `${acc.balance}€`;
 };
 
-calcDisplayBalance(account1.movements);
+// calcDisplayBalance(account1.movements);
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -118,6 +118,12 @@ const calcDisplaySummary = (acc) => {
 // Event Handlers
 let currentAccount;
 
+const UpdateUi = function (acc) {
+  displayMovements(acc.movements);
+  calcDisplayBalance(acc);
+  calcDisplaySummary(acc);
+};
+
 btnLogin.addEventListener("click", function (e) {
   //prevent Form from submitting
   e.preventDefault();
@@ -135,12 +141,31 @@ btnLogin.addEventListener("click", function (e) {
   containerApp.style.opacity = 100;
 
   inputLoginUsername.value = inputLoginPin.value = "";
-  inputLoginUsername.blur();
   inputLoginPin.blur();
+  inputLoginUsername.blur();
 
-  displayMovements(currentAccount.movements);
-  calcDisplayBalance(currentAccount.movements);
-  calcDisplaySummary(currentAccount);
+  UpdateUi(currentAccount);
+});
+
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  );
+
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+    UpdateUi(currentAccount);
+  }
 });
 
 /////////////////////////////////////////////////
@@ -193,6 +218,7 @@ console.log(depositsFor);
 //   console.log(`Iteration ${i}: ${acc}`)
 //   return acc + cur;
 // }, 0);
+
 const balance = movements.reduce((acc, cur) => acc + cur, 0);
 
 console.log(balance);
