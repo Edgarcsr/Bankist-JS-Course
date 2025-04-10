@@ -1,9 +1,11 @@
 # 💰 Bankist App – Simulador de Banco Digital
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Projeto-Bankist%20App-lightblue?style=for-the-badge&logo=javascript&logoColor=white" />
-  <img src="https://img.shields.io/badge/Frontend-JavaScript%20%7C%20HTML%20%7C%20CSS-yellow?style=for-the-badge&logo=html5&logoColor=white" />
-  <img src="https://img.shields.io/badge/UI-DOM%20Manipulation-green?style=for-the-badge&logo=css3&logoColor=white" />
+  <img src="https://img.shields.io/badge/Projeto-Bankist%20App-yellow?style=for-the-badge&logo=javascript&logoColor=white" />
+  <img src="https://img.shields.io/badge/Certificado-Incompleto-orange?style=for-the-badge&logo=graduation-cap&logoColor=white" alt="Certificado do Curso" />
+  <a href="https://www.udemy.com/course/build-responsive-real-world-websites-with-html-css/">
+    <img src="https://img.shields.io/badge/Curso%20Udemy-Javascript%202025-blueviolet?style=for-the-badge&logo=udemy&logoColor=white" alt="Curso Udemy" />
+  </a>
 </p>
 
 ## 📌 Descrição do Projeto
